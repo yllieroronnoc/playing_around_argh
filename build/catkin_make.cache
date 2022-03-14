@@ -1,0 +1,2 @@
+men_at_work
+-DCATKIN_DEVEL_PREFIX=/home/yllieroronnoc/playing_around_argh/devel -DCMAKE_INSTALL_PREFIX=/home/yllieroronnoc/playing_around_argh/install -G Unix Makefiles

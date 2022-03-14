@@ -1,0 +1,8 @@
+prefix=/home/yllieroronnoc/playing_around_argh/devel
+
+Name: men_at_work
+Description: Description of men_at_work
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 
