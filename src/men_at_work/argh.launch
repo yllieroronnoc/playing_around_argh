@@ -1,0 +1,13 @@
+<launch>
+	<node
+		pkg="men_at_work"
+		type="control_node"
+		name="control"
+		required="true"
+	/>
+	<node
+		pkg="men_at_work"
+		type="move_node"
+		name="move"
+	/>
+</launch>
