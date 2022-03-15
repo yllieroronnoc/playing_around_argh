@@ -13,7 +13,6 @@
 #include <stdlib.h>
 #include <math.h>
 
-
 //look into message filters if wanna have two inputs to callback
 
 
@@ -33,35 +32,132 @@
 	Email: coor1752@colorado.edu
 */
 
+
+
+//using a global variable again, i know its a no no
+//used for ignoring constant publishing of sensor position
+bool position_reached[3] = { false };
+
+
+/* ignore for now
+
+//probably convert to class
 void control_callback(const std_msgs::Int32& move_count){
 
-	//initialize a boolean array to limit ouptuts to terminal
-	int *output_array;
-	output_array = (int*)malloc(3*sizeof(bool));
-	output_array[0] = false;
-	output_array[1] = false;
-	output_array[2] = false;
-	ROS_FATAL_STREAM("Subscribed Data in control_callback: " << move_count.data);
 	//dummy loop which will continue to run until the sensor completes all positions
 		//switch wasnt working maybe use conditionals?
-		if( (move_count.data == 1) && ( output_array[0] == false ) ){
+		if( (move_count.data == 1) && ( position_reached[0] == false ) ){
 			ROS_INFO_STREAM("Current Sensor Position: " << move_count.data << "\n");
-			output_array[0] = true;
+			position_reached[0] = true;
 		}
-		if( (move_count.data == 2) && (output_array[1] == false ) ) {
+		if( (move_count.data == 2) && (position_reached[1] == false ) ) {
 			ROS_INFO_STREAM("Current Sensor Position: " << move_count.data << "\n");
-			output_array[0] = true;
+			position_reached[1] = true;
 		}
-		if( (move_count.data == 3) && ( output_array[2] == false ) ){
+		if( (move_count.data == 3) && ( position_reached[2] == false ) ){
 			ROS_INFO_STREAM("Current Sensor Position: " << move_count.data << "\n");
-			output_array[0] = true;
+			position_reached[2] = true;
 		}
-		if(move_count.data == 4){
+		if( ( move_count.data == 1) && ( position_reached[2] == true ) ){
+			// if move count data has reached one again, and  the array is already true, the sensor has
+			// moved from position three back to one signifying all sensing positions have been reached. prompt to
+			// user if they want to continue and adjust values accoringly 
+			
+			std::cout << "All Sensing Positions have been reached, do you wish to run the program again?\n (yes/no): ";
+			std::getline(std::cin, std::string user_answer);
+
+			if(user_answer == "y"){
+				//if user wants to continue, reset variables and start again by passing 
+			}else{
+
+			}
+			//re initialize variables
+
+			for(int i = 0; i <= 2; i++){
+				position_reached[i] = false;
+			}
+
 			ros::shutdown();
 		}
-	free(output_array);
 
 }
+*/
+
+//create class for publishing and subscribing for sensor positioning 
+class Controller
+{
+public:
+  Controller()
+  {
+    //publsihing back to sensing node if user wants to continue
+    pub_1 = n_.advertise<std_msgs::Bool>("sensing_node_input", 1000);
+
+    //subscribing to the integer representing the current position of the sensor
+    sub_1 = n_.subscribe("move_counter", 1000, &Controller::Controller_callback, this);
+  
+  }
+
+  void Controller_callback( const std_msgs::Int32& move_count )
+  {
+
+  	ros::Rate rate(2);
+  	ROS_WARN_STREAM("Inside Controller_Callback\n");
+
+  	//initializing messages to be published, boolean to restart sensing node
+    std_msgs::Bool startherup;
+    //dummy loop which will continue to run until the sensor completes all positions
+		//switch wasnt working maybe use conditionals?
+		if( (move_count.data == 1) && ( position_reached[0] == false ) ){
+			ROS_INFO_STREAM("Current Sensor Position: " << move_count.data << "\n");
+			position_reached[0] = true;
+		}
+		if( (move_count.data == 2) && (position_reached[1] == false ) ) {
+			ROS_INFO_STREAM("Current Sensor Position: " << move_count.data << "\n");
+			position_reached[1] = true;
+		}
+		if( (move_count.data == 3) && ( position_reached[2] == false ) ){
+			ROS_INFO_STREAM("Current Sensor Position: " << move_count.data << "\n");
+			position_reached[2] = true;
+		}
+		if( ( move_count.data == 1) && ( position_reached[2] == true ) ){
+			// if move count data has reached one again, and  the array is already true, the sensor has
+			// moved from position three back to one signifying all sensing positions have been reached. prompt to
+			// user if they want to continue and adjust values accoringly 
+			
+			//initialize string for user input
+			std::string user_answer;
+
+			std::cout << "All Sensing Positions have been reached, do you wish to run the program again?\n (yes/no): ";
+			std::getline(std::cin, user_answer);
+
+			if(user_answer == "y"){
+				//reinitialize values
+				for(int i = 0; i <= 2; i++){
+					position_reached[i] = false;
+				}
+				
+				//republish to sensing node telling it to start again 
+				startherup.data = true;
+				//publish
+				rate.sleep();
+				pub_1.publish(startherup);
+
+			}else{
+				//otherwise shut down the program
+				ROS_FATAL_STREAM("User shutting down program...");
+				ros::shutdown();
+			}
+
+			
+		}
+}
+
+private:
+  ros::NodeHandle n_; 
+  ros::Publisher pub_1;
+  ros::Subscriber sub_1;
+
+};//End of class MoveSensor
 
 
 /*
@@ -97,6 +193,8 @@ int main(int argc, char **argv){
 	ros::Rate rate(2);
 	//creating publisher object for starting sensing node
 	ros::Publisher pub = nh.advertise<std_msgs::Bool>("sensing_node_input", 1000);
+
+	//used for debugging 
 	//creating publisher object for starting sensing node
 	ros::Publisher pub2 = nh.advertise<std_msgs::Bool>("sensing_node_boolean_move", 1000);
 	std_msgs::Bool blah;
@@ -126,20 +224,20 @@ int main(int argc, char **argv){
 
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	*/
-	
 
-		//inittialy publisihe msg to sensor topic
-		rate.sleep();
-		pub.publish(msg_to_sensor);
-		pub2.publish(blah);
+	//inittialy publisihe msg to sensor topic
+	rate.sleep();
+	pub.publish(msg_to_sensor);
+	pub2.publish(blah);
 
-		ROS_INFO_STREAM("Published Message to sensor: " << msg_to_sensor.data);
+	ROS_INFO_STREAM("Published Message to sensor: " << msg_to_sensor.data);
 
-		//creating subscriber object to begin watching the move count
-		ros::Subscriber sub = nh.subscribe("move_counter", 1000, &control_callback);
+	//creating publisher subscriber object
+	Controller Controller_Object;
 
-		//letting ros take over
-		ros::spin();
+	//letting ros take over
+	ros::spin();
+
 
 		
 
