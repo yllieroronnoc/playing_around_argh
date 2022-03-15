@@ -59,7 +59,7 @@ men_at_work/CMakeFiles/control_node.dir/control_node.cpp.o: /opt/ros/melodic/inc
 men_at_work/CMakeFiles/control_node.dir/control_node.cpp.o: /opt/ros/melodic/include/ros/wall_timer_options.h
 men_at_work/CMakeFiles/control_node.dir/control_node.cpp.o: /opt/ros/melodic/include/rosconsole/macros_generated.h
 men_at_work/CMakeFiles/control_node.dir/control_node.cpp.o: /opt/ros/melodic/include/std_msgs/Bool.h
-men_at_work/CMakeFiles/control_node.dir/control_node.cpp.o: /opt/ros/melodic/include/std_msgs/Int8.h
+men_at_work/CMakeFiles/control_node.dir/control_node.cpp.o: /opt/ros/melodic/include/std_msgs/Int32.h
 men_at_work/CMakeFiles/control_node.dir/control_node.cpp.o: /opt/ros/melodic/include/std_msgs/String.h
 men_at_work/CMakeFiles/control_node.dir/control_node.cpp.o: /opt/ros/melodic/include/xmlrpcpp/XmlRpcDecl.h
 men_at_work/CMakeFiles/control_node.dir/control_node.cpp.o: /opt/ros/melodic/include/xmlrpcpp/XmlRpcValue.h

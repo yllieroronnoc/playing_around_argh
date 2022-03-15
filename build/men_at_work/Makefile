@@ -168,6 +168,21 @@ depend:
 .PHONY : depend
 
 # Convenience name for target.
+men_at_work/CMakeFiles/move_node.dir/rule:
+	cd /home/yllieroronnoc/playing_around_argh/build && $(MAKE) -f CMakeFiles/Makefile2 men_at_work/CMakeFiles/move_node.dir/rule
+.PHONY : men_at_work/CMakeFiles/move_node.dir/rule
+
+# Convenience name for target.
+move_node: men_at_work/CMakeFiles/move_node.dir/rule
+
+.PHONY : move_node
+
+# fast build rule for target.
+move_node/fast:
+	cd /home/yllieroronnoc/playing_around_argh/build && $(MAKE) -f men_at_work/CMakeFiles/move_node.dir/build.make men_at_work/CMakeFiles/move_node.dir/build
+.PHONY : move_node/fast
+
+# Convenience name for target.
 men_at_work/CMakeFiles/control_node.dir/rule:
 	cd /home/yllieroronnoc/playing_around_argh/build && $(MAKE) -f CMakeFiles/Makefile2 men_at_work/CMakeFiles/control_node.dir/rule
 .PHONY : men_at_work/CMakeFiles/control_node.dir/rule
@@ -524,6 +539,33 @@ control_node.cpp.s:
 	cd /home/yllieroronnoc/playing_around_argh/build && $(MAKE) -f men_at_work/CMakeFiles/control_node.dir/build.make men_at_work/CMakeFiles/control_node.dir/control_node.cpp.s
 .PHONY : control_node.cpp.s
 
+move_node.o: move_node.cpp.o
+
+.PHONY : move_node.o
+
+# target to build an object file
+move_node.cpp.o:
+	cd /home/yllieroronnoc/playing_around_argh/build && $(MAKE) -f men_at_work/CMakeFiles/move_node.dir/build.make men_at_work/CMakeFiles/move_node.dir/move_node.cpp.o
+.PHONY : move_node.cpp.o
+
+move_node.i: move_node.cpp.i
+
+.PHONY : move_node.i
+
+# target to preprocess a source file
+move_node.cpp.i:
+	cd /home/yllieroronnoc/playing_around_argh/build && $(MAKE) -f men_at_work/CMakeFiles/move_node.dir/build.make men_at_work/CMakeFiles/move_node.dir/move_node.cpp.i
+.PHONY : move_node.cpp.i
+
+move_node.s: move_node.cpp.s
+
+.PHONY : move_node.s
+
+# target to generate assembly for a file
+move_node.cpp.s:
+	cd /home/yllieroronnoc/playing_around_argh/build && $(MAKE) -f men_at_work/CMakeFiles/move_node.dir/build.make men_at_work/CMakeFiles/move_node.dir/move_node.cpp.s
+.PHONY : move_node.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -533,6 +575,7 @@ help:
 	@echo "... install/strip"
 	@echo "... install/local"
 	@echo "... rebuild_cache"
+	@echo "... move_node"
 	@echo "... control_node"
 	@echo "... geometry_msgs_generate_messages_py"
 	@echo "... test"
@@ -562,6 +605,9 @@ help:
 	@echo "... control_node.o"
 	@echo "... control_node.i"
 	@echo "... control_node.s"
+	@echo "... move_node.o"
+	@echo "... move_node.i"
+	@echo "... move_node.s"
 .PHONY : help
 
 

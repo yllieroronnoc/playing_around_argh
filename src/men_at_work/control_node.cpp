@@ -4,7 +4,7 @@
 //for starting sensor node
 #include <std_msgs/Bool.h>
 //for subscribing to move count
-#include <std_msgs/Int8.h>
+#include <std_msgs/Int32.h>
 
 
 //for standard dumb stuff
@@ -33,7 +33,7 @@
 	Email: coor1752@colorado.edu
 */
 
-void control_callback(const std_msgs::Int8& move_count){
+void control_callback(const std_msgs::Int32& move_count){
 
 	//initialize a boolean array to limit ouptuts to terminal
 	int *output_array;
@@ -41,32 +41,24 @@ void control_callback(const std_msgs::Int8& move_count){
 	output_array[0] = false;
 	output_array[1] = false;
 	output_array[2] = false;
+	ROS_FATAL_STREAM("Subscribed Data in control_callback: " << move_count.data);
 	//dummy loop which will continue to run until the sensor completes all positions
-	while(move_count.data != 4){
-		
-		switch(move_count.data){
-			case 1:
-				if(output_array[0] == false){
-					ROS_INFO_STREAM("Current Sensor Position: " << move_count.data << "\n");
-				}
-				break;
-			case 2:
-				if(output_array[1] == false){
-					ROS_INFO_STREAM("Current Sensor Position: " << move_count.data << "\n");
-				}
-				break;
-			case 3:
-				if(output_array[2] == false){
-					ROS_INFO_STREAM("Current Sensor Position: " << move_count.data << "\n");
-				}
-				break;
-			default:
-				ROS_FATAL_STREAM("control_callback: this shouldnt be reached");
-				break;
-
+		//switch wasnt working maybe use conditionals?
+		if( (move_count.data == 1) && ( output_array[0] == false ) ){
+			ROS_INFO_STREAM("Current Sensor Position: " << move_count.data << "\n");
+			output_array[0] = true;
 		}
-
-	}
+		if( (move_count.data == 2) && (output_array[1] == false ) ) {
+			ROS_INFO_STREAM("Current Sensor Position: " << move_count.data << "\n");
+			output_array[0] = true;
+		}
+		if( (move_count.data == 3) && ( output_array[2] == false ) ){
+			ROS_INFO_STREAM("Current Sensor Position: " << move_count.data << "\n");
+			output_array[0] = true;
+		}
+		if(move_count.data == 4){
+			ros::shutdown();
+		}
 	free(output_array);
 
 }
@@ -102,11 +94,18 @@ int main(int argc, char **argv){
 	//initializing ros and node for publishing 
 	ros::init(argc, argv, "argh_control_node");
 	ros::NodeHandle nh;
-
+	ros::Rate rate(2);
 	//creating publisher object for starting sensing node
 	ros::Publisher pub = nh.advertise<std_msgs::Bool>("sensing_node_input", 1000);
-	//creating subscriber object for watching move sensor count
-	ros::Subscriber sub = nh.subscribe("move_counter", 1000, &control_callback);
+	//creating publisher object for starting sensing node
+	ros::Publisher pub2 = nh.advertise<std_msgs::Bool>("sensing_node_boolean_move", 1000);
+	std_msgs::Bool blah;
+
+	blah.data = true;
+	
+
+
+	
 
 	//initalizing variables
 	std::string user_input;
@@ -127,32 +126,22 @@ int main(int argc, char **argv){
 
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	*/
-	while(ros::ok()){
+	
 
 		//inittialy publisihe msg to sensor topic
+		rate.sleep();
 		pub.publish(msg_to_sensor);
-		
+		pub2.publish(blah);
+
+		ROS_INFO_STREAM("Published Message to sensor: " << msg_to_sensor.data);
+
 		//creating subscriber object to begin watching the move count
 		ros::Subscriber sub = nh.subscribe("move_counter", 1000, &control_callback);
 
 		//letting ros take over
-		ros::spinOnce();
+		ros::spin();
 
-		//reaches here when callback finishes
-		std::cout<<"would you like to continue?\n type yes or no: ";
-		std::getline(std::cin, user_input);
-
-		if(user_input == "no"){
-			//user wants to shutdown program so, display shutdown and shut down node
-			//make sure in launch file to make this node required
-			std::cout << "shutting down...";
-			ros::shutdown();
-		}
-
-		//otherwise set message to sensor to true and run again
-		msg_to_sensor.data = true;
-	
-	}
+		
 
 
 }

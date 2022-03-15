@@ -285,6 +285,19 @@ gtest/fast:
 .PHONY : gtest/fast
 
 #=============================================================================
+# Target rules for targets named move_node
+
+# Build rule for target.
+move_node: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 move_node
+.PHONY : move_node
+
+# fast build rule for target.
+move_node/fast:
+	$(MAKE) -f men_at_work/CMakeFiles/move_node.dir/build.make men_at_work/CMakeFiles/move_node.dir/build
+.PHONY : move_node/fast
+
+#=============================================================================
 # Target rules for targets named control_node
 
 # Build rule for target.
@@ -592,6 +605,7 @@ help:
 	@echo "... gmock"
 	@echo "... gtest_main"
 	@echo "... gtest"
+	@echo "... move_node"
 	@echo "... control_node"
 	@echo "... geometry_msgs_generate_messages_py"
 	@echo "... geometry_msgs_generate_messages_lisp"

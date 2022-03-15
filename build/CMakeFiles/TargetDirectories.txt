@@ -38,6 +38,7 @@
 /home/yllieroronnoc/playing_around_argh/build/men_at_work/CMakeFiles/install/strip.dir
 /home/yllieroronnoc/playing_around_argh/build/men_at_work/CMakeFiles/install/local.dir
 /home/yllieroronnoc/playing_around_argh/build/men_at_work/CMakeFiles/rebuild_cache.dir
+/home/yllieroronnoc/playing_around_argh/build/men_at_work/CMakeFiles/move_node.dir
 /home/yllieroronnoc/playing_around_argh/build/men_at_work/CMakeFiles/control_node.dir
 /home/yllieroronnoc/playing_around_argh/build/men_at_work/CMakeFiles/geometry_msgs_generate_messages_py.dir
 /home/yllieroronnoc/playing_around_argh/build/men_at_work/CMakeFiles/test.dir
