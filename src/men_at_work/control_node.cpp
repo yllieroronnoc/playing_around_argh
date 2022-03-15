@@ -1,3 +1,12 @@
+
+/*
+_______  _____  __   _ _______  ______  _____              __   _  _____  ______  _______
+ |       |     | | \  |    |    |_____/ |     | |           | \  | |     | |     \ |______
+ |_____  |_____| |  \_|    |    |    \_ |_____| |_____      |  \_| |_____| |_____/ |______
+                                                                                          
+*/
+
+
 #include <ros/ros.h>
 
 
@@ -11,79 +20,35 @@
 #include <stdio.h>
 #include <std_msgs/String.h>
 #include <stdlib.h>
-#include <math.h>
-
-//look into message filters if wanna have two inputs to callback
 
 
-/*
-	Name: control_callback
-	Purpose: Using the sensors current position as a conditional, when the sensor has gone through an entire
-			 cycle, callback function should complete and return back to main. also just displaying to the user
-			 the location of the sensor mount.
+
+ /*
+	Name: Controller
+	Purpose: Publisher and Subscriber node which will determine when a complete harvesting sequence has occured.
+			 Subscribing to the sensor postion, this will allows us to know when all sensor locations have been reached, 
+			 and then prompt to user if they want to run again. 
 	Inputs:
 		move_count: integer value representing the current position of the sensor 
 	Outputs:
-		current sensor location to terminal
+		"sensing_node_input" , std_msgs/Bool: used to start the sensing node again
+		terminal: current sensor location
+	
+	Updates to be made:
+		increase the usability of the prompt to user rn its just "y" or else
 
 	Author: Connor O'Reilly
 	Company: ARGH Robotics
-	Last Edited: 3/13/2022
+	Last Edited: 3/15/2022
 	Email: coor1752@colorado.edu
 */
 
 
-
-//using a global variable again, i know its a no no
-//used for ignoring constant publishing of sensor position
+//i know this is not ideal but on a time crunch
+//use to catch when all sensing positions have been reached
 bool position_reached[3] = { false };
 
 
-/* ignore for now
-
-//probably convert to class
-void control_callback(const std_msgs::Int32& move_count){
-
-	//dummy loop which will continue to run until the sensor completes all positions
-		//switch wasnt working maybe use conditionals?
-		if( (move_count.data == 1) && ( position_reached[0] == false ) ){
-			ROS_INFO_STREAM("Current Sensor Position: " << move_count.data << "\n");
-			position_reached[0] = true;
-		}
-		if( (move_count.data == 2) && (position_reached[1] == false ) ) {
-			ROS_INFO_STREAM("Current Sensor Position: " << move_count.data << "\n");
-			position_reached[1] = true;
-		}
-		if( (move_count.data == 3) && ( position_reached[2] == false ) ){
-			ROS_INFO_STREAM("Current Sensor Position: " << move_count.data << "\n");
-			position_reached[2] = true;
-		}
-		if( ( move_count.data == 1) && ( position_reached[2] == true ) ){
-			// if move count data has reached one again, and  the array is already true, the sensor has
-			// moved from position three back to one signifying all sensing positions have been reached. prompt to
-			// user if they want to continue and adjust values accoringly 
-			
-			std::cout << "All Sensing Positions have been reached, do you wish to run the program again?\n (yes/no): ";
-			std::getline(std::cin, std::string user_answer);
-
-			if(user_answer == "y"){
-				//if user wants to continue, reset variables and start again by passing 
-			}else{
-
-			}
-			//re initialize variables
-
-			for(int i = 0; i <= 2; i++){
-				position_reached[i] = false;
-			}
-
-			ros::shutdown();
-		}
-
-}
-*/
-
-//create class for publishing and subscribing for sensor positioning 
 class Controller
 {
 public:
@@ -100,56 +65,66 @@ public:
   void Controller_callback( const std_msgs::Int32& move_count )
   {
 
+  	//intialize sleep rate
   	ros::Rate rate(2);
-  	ROS_WARN_STREAM("Inside Controller_Callback\n");
 
   	//initializing messages to be published, boolean to restart sensing node
-    std_msgs::Bool startherup;
-    //dummy loop which will continue to run until the sensor completes all positions
-		//switch wasnt working maybe use conditionals?
-		if( (move_count.data == 1) && ( position_reached[0] == false ) ){
-			ROS_INFO_STREAM("Current Sensor Position: " << move_count.data << "\n");
-			position_reached[0] = true;
-		}
-		if( (move_count.data == 2) && (position_reached[1] == false ) ) {
-			ROS_INFO_STREAM("Current Sensor Position: " << move_count.data << "\n");
-			position_reached[1] = true;
-		}
-		if( (move_count.data == 3) && ( position_reached[2] == false ) ){
-			ROS_INFO_STREAM("Current Sensor Position: " << move_count.data << "\n");
-			position_reached[2] = true;
-		}
-		if( ( move_count.data == 1) && ( position_reached[2] == true ) ){
-			// if move count data has reached one again, and  the array is already true, the sensor has
-			// moved from position three back to one signifying all sensing positions have been reached. prompt to
-			// user if they want to continue and adjust values accoringly 
-			
-			//initialize string for user input
-			std::string user_answer;
+    std_msgs::Bool start_her_up;
 
-			std::cout << "All Sensing Positions have been reached, do you wish to run the program again?\n (yes/no): ";
-			std::getline(std::cin, user_answer);
 
-			if(user_answer == "y"){
-				//reinitialize values
-				for(int i = 0; i <= 2; i++){
-					position_reached[i] = false;
-				}
-				
-				//republish to sensing node telling it to start again 
-				startherup.data = true;
-				//publish
-				rate.sleep();
-				pub_1.publish(startherup);
+	//switch wasnt working maybe use conditionals?
+	//for sensor position, change boolean array value to true so we dont continue to print to terminal
+	if( (move_count.data == 1) && ( position_reached[0] == false ) ){
 
-			}else{
-				//otherwise shut down the program
-				ROS_FATAL_STREAM("User shutting down program...");
-				ros::shutdown();
+		ROS_INFO_STREAM("Current Sensor Position: " << move_count.data << "\n");
+		position_reached[0] = true;
+
+	}
+	if( (move_count.data == 2) && (position_reached[1] == false ) ) {
+		
+		ROS_INFO_STREAM("Current Sensor Position: " << move_count.data << "\n");
+		position_reached[1] = true;
+
+	}
+	if( (move_count.data == 3) && ( position_reached[2] == false ) ){
+		
+		ROS_INFO_STREAM("Current Sensor Position: " << move_count.data << "\n");
+		position_reached[2] = true;
+	
+	}
+	if( ( move_count.data == 1) && ( position_reached[2] == true ) ){
+		// if move count data has reached one again, and the array at location 3 is true, the sensor has
+		// moved from position three back to one signifying all sensing positions have been reached. prompt to
+		// user if they want to continue and adjust values accoringly 
+		
+		//initialize string for user input
+		std::string user_answer;
+
+		//display to user
+		std::cout << "All Sensing Positions have been reached, do you wish to run the program again?\n (yes/no): ";
+		std::getline(std::cin, user_answer);
+
+		//can update, just easier for testing 
+		if(user_answer == "y"){
+
+			//reinitialize values
+			for(int i = 0; i <= 2; i++){
+				position_reached[i] = false;
 			}
-
 			
+			//republish to sensing node telling it to start again 
+			start_her_up.data = true;
+			//publish
+			rate.sleep();
+			pub_1.publish(start_her_up);
+
+		}else{
+			//otherwise shut down the program
+			ROS_FATAL_STREAM("Shutting down program...");
+			ros::shutdown();
 		}
+
+	}
 }
 
 private:
@@ -157,20 +132,21 @@ private:
   ros::Publisher pub_1;
   ros::Subscriber sub_1;
 
-};//End of class MoveSensor
+};//End of class Controller
 
 
 /*
 	Purpose: Main control script for argh code at the moment. 
-			 when user presses enter button, or any button for a matter of fact, a boolean will be 
+			 When user presses enter button, or any button for a matter of fact, a boolean will be 
 			 passed onto the sensor_node_input topic which will start the sensing part of the harvesting sequence.
-			 once the mount has gone to all three positions the callback will complete, and the user will be prompted if it wants to be run 
-			 again.
+			 And create the controller object
  	Inputs:
  		none
 	Ouputs: 
 		displaying to terminal
-
+	
+	Updates to be made:
+	
 	Author: Connor O'Reilly
 	Company: ARGH Robotics
 	Last Edited: 3/13/2022
@@ -179,67 +155,48 @@ private:
 
 int main(int argc, char **argv){
 
-	/*
-	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-	initialization
-
-	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	*/
-
 	//initializing ros and node for publishing 
 	ros::init(argc, argv, "argh_control_node");
 	ros::NodeHandle nh;
-	ros::Rate rate(2);
+
+	ros::Rate rate(2); // initializing sleep rate 2Hz
+
 	//creating publisher object for starting sensing node
 	ros::Publisher pub = nh.advertise<std_msgs::Bool>("sensing_node_input", 1000);
 
+	/**********************************************************/
 	//used for debugging 
-	//creating publisher object for starting sensing node
+	//creating publisher object to pass boolean value to start move_node
 	ros::Publisher pub2 = nh.advertise<std_msgs::Bool>("sensing_node_boolean_move", 1000);
 	std_msgs::Bool blah;
 
 	blah.data = true;
-	
+	/**********************************************************/
 
-
-	
-
-	//initalizing variables
+	//initalizing user input variabl
 	std::string user_input;
-	//not worried about user input guessing it will just be pressing the enter button
 
-	std::cout << "welcome to the shit show\npress enter to begin...";
-	std::cin.ignore();
+	//prompt to user if they want to begin 
+	std::cout << "Welcome to ARGHRobotics Harvesting Program"
+	std::cout << "\npress enter to begin...";
+	std::cin.ignore();//take any key enter 
 
 	//publish true message to start sensing node 
 	std_msgs::Bool msg_to_sensor;
 	msg_to_sensor.data = true; //hopefully this begins the sensor node
 	
-
-	/*
-	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-	the meat
-
-	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	*/
-
-	//inittialy publisihe msg to sensor topic
+	//publish on "sensing_node_input" topic
 	rate.sleep();
 	pub.publish(msg_to_sensor);
 	pub2.publish(blah);
 
-	ROS_INFO_STREAM("Published Message to sensor: " << msg_to_sensor.data);
+	///display to user that we have began 
+	ROS_INFO_STREAM("Published Message to Sensor_node to begin Harvesting");
 
 	//creating publisher subscriber object
 	Controller Controller_Object;
 
 	//letting ros take over
 	ros::spin();
-
-
-		
-
 
 }

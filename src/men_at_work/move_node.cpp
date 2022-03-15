@@ -1,3 +1,11 @@
+/*
+_______  _____  _    _ _______      __   _  _____  ______  _______
+|  |  | |     |  \  /  |______      | \  | |     | |     \ |______
+|  |  | |_____|   \/   |______      |  \_| |_____| |_____/ |______
+
+*/                                                                  
+
+
 #include <ros/ros.h>
 
 //for subscring to sensor node
@@ -9,10 +17,30 @@
 #include <stdio.h>
 #include <std_msgs/String.h>
 #include <stdlib.h>
-#include <math.h>
 
 //using a global variable for sensing position, might update later depending if i have time
 int current_sensor_position { 1 };
+
+ /*
+	Name: MoveSensor
+	Purpose: Publish Twice and Subscriber node which is in charge of moving the sensor to its three positions.
+			 Will begin after reciving a boolean true value published on the sensing_node_boolean_move topic 
+			 and after completing move will reset by publsihing a boolean false on the same topic it subscribes to. 
+	Inputs:
+		"sensing_node_boolean_move", std_msgs/Bool : boolean value that will control when a move needs to happen
+	Outputs:
+		"sensing_node_input" , std_msgs/Bool: used to start the sensing node again
+		terminal: notifying user that robotic arm is moving sensor 
+	
+	Updates to be made:
+																																																																						
+
+	Author: Connor O'Reilly
+	Company: ARGH Robotics
+	Last Edited: 3/15/2022
+	Email: coor1752@colorado.edu
+*/
+
 
 //create class for publishing and subscribing for sensor positioning 
 class MoveSensor
@@ -51,12 +79,21 @@ public:
     		case 1: 
     			//if current position is equal to one move sensor to position two
 
+    			//from home move to sensor position 1
+    			//activate and closer gripper
+    			//from sensor translate along x to second sensor position
+    			//release gripper and move home
 
     			ROS_INFO_STREAM("Moving Sensor from position 1 -> 2..."); //informing user of progress
     			current_sensor_position = 2; //update sensor position 
     			break;
 			case 2:
 				//if current position is equal to two move sensor to position three
+				
+				//activate and close gripper
+				//from home move to sensor position 2
+				//from sensor translate along x to third sensor position
+				//release gripper and move home
 
 				ROS_INFO_STREAM("Moving Sensor from position 2 -> 3..."); //informing user of progress			
 				current_sensor_position = 3; //update sensor position
@@ -84,22 +121,6 @@ public:
 
     }
 
-    //commenting this out incase i need to look back
-
-   /* 
-    current_sensor_position = current_sensor_position + 1;
-    	sensor_position.data = current_sensor_position;
-    	ROS_WARN_STREAM("Inside Conditional, new sensor position: " << sensor_position.data);
-    	rate.sleep();
-    	pub_1.publish(sensor_position);
-
-    //reseting the sensor boolean value for now this will be true
-    move_the_sensor_bool.data = true;
-    rate.sleep();
-    pub_2.publish(move_the_sensor_bool);
-    
-    rate.sleep();
-  	*/
   }
 
 private:
@@ -129,15 +150,5 @@ int main(int argc, char **argv){
 	//creating object of class SubscribeAndPublish that will take care of everything
 	ros::spin();
 
-	//while(ros::ok()){
-		//creating subscriber object for detecting boolean sent from sensing node
-	//	ros::Subscriber sub = nh.subscribe("sensing_node_boolean_move", 1000, &move_sensor_callback);
-		
-		//after callback completes reset boolean value back to false until sensor node submits a request again
-		
-		//letting ros take control
-	//	ros::spin();
-
-	//}
 	
 }
