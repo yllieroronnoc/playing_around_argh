@@ -13,6 +13,11 @@ _______  _____  _    _ _______      __   _  _____  ______  _______
 //for publishing move count
 #include <std_msgs/Int32.h>
 
+
+//for moving sensor
+
+
+
 //for standard dumb stuff
 #include <stdio.h>
 #include <std_msgs/String.h>
@@ -66,7 +71,7 @@ public:
   {
 
   	ros::Rate rate(2);
-  	ROS_WARN_STREAM("Inside MoveSensor_Callback\n");
+  	
 
   	//initializing messages to be published
     std_msgs::Int32 sensor_position;
@@ -85,6 +90,9 @@ public:
     			//release gripper and move home
 
     			ROS_INFO_STREAM("Moving Sensor from position 1 -> 2..."); //informing user of progress
+    			
+
+
     			current_sensor_position = 2; //update sensor position 
     			break;
 			case 2:

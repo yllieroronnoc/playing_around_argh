@@ -177,7 +177,7 @@ int main(int argc, char **argv){
 	std::string user_input;
 
 	//prompt to user if they want to begin 
-	std::cout << "Welcome to ARGHRobotics Harvesting Program";
+	std::cout << "\n\nWelcome to ARGHRobotics Harvesting Program";
 	std::cout << "\npress enter to begin...";
 	std::cin.ignore();//take any key enter 
 
