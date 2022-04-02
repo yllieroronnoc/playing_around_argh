@@ -8,7 +8,7 @@ project(men_at_work)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED)
-find_package(catkin REQUIRED COMPONENTS roscpp geometry_msgs std_msgs)
+find_package(catkin REQUIRED COMPONENTS roscpp moveit moveit_msgs moveit_ros_planning_interface moveit_planning geometry_msgs std_msgs)
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
 

@@ -7,9 +7,4 @@
 # new environment variables
 
 # modified environment variables
-export CMAKE_PREFIX_PATH="/home/yllieroronnoc/playing_around_argh/devel:$CMAKE_PREFIX_PATH"
-export LD_LIBRARY_PATH="/home/yllieroronnoc/playing_around_argh/devel/lib:$LD_LIBRARY_PATH"
-export PKG_CONFIG_PATH="/home/yllieroronnoc/playing_around_argh/devel/lib/pkgconfig:$PKG_CONFIG_PATH"
 export PWD='/home/yllieroronnoc/playing_around_argh/build'
-export ROSLISP_PACKAGE_DIRECTORIES='/home/yllieroronnoc/playing_around_argh/devel/share/common-lisp'
-export ROS_PACKAGE_PATH="/home/yllieroronnoc/playing_around_argh/src:$ROS_PACKAGE_PATH"
