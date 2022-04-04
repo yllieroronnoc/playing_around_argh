@@ -1,0 +1,8 @@
+prefix=/home/yllieroronnoc/playing_around_argh/install
+
+Name: argh_nodes
+Description: Description of argh_nodes
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

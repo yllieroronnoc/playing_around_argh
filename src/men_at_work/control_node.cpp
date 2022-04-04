@@ -9,12 +9,10 @@ _______  _____  __   _ _______  ______  _____              __   _  _____  ______
 
 #include <ros/ros.h>
 
-
 //for starting sensor node
 #include <std_msgs/Bool.h>
 //for subscribing to move count
 #include <std_msgs/Int32.h>
-
 
 //for standard dumb stuff
 #include <stdio.h>
@@ -39,7 +37,7 @@ _______  _____  __   _ _______  ______  _____              __   _  _____  ______
 
 	Author: Connor O'Reilly
 	Company: ARGH Robotics
-	Last Edited: 3/15/2022
+	Last Edited: 04/03/2022
 	Email: coor1752@colorado.edu
 */
 
@@ -70,7 +68,6 @@ public:
 
   	//initializing messages to be published, boolean to restart sensing node
     std_msgs::Bool start_her_up;
-
 
 	//switch wasnt working maybe use conditionals?
 	//for sensor position, change boolean array value to true so we dont continue to print to terminal
@@ -188,7 +185,11 @@ int main(int argc, char **argv){
 	//publish on "sensing_node_input" topic
 	rate.sleep();
 	pub.publish(msg_to_sensor);
+
+	//%%%%%%%%%%%%% 
 	pub2.publish(blah);
+	//used for debugging move node can delete
+	//%%%%%%%%%%%%%
 
 	///display to user that we have began 
 	ROS_INFO_STREAM("Published Message to Sensor_node to begin Harvesting");

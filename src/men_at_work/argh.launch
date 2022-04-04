@@ -1,15 +1,23 @@
 <launch>
 	<node
-		pkg="men_at_work"
+		pkg="argh_nodes"
 		type="control_node"
 		name="control"
 		required="true"
 		output="screen"
 	/>
 	<node
-		pkg="men_at_work"
+		pkg="argh_nodes"
 		type="move_node"
 		name="move"
 		output="screen"
 	/>
+	<node
+		pkg="argh_nodes"
+		type="gripper_cntrl_node.py"
+		name="gripper"
+		output="screen"
+	/>
+
+
 </launch>

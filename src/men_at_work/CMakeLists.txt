@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0.2)
-project(men_at_work)
+project(argh_nodes)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
@@ -8,7 +8,8 @@ project(men_at_work)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED)
-find_package(catkin REQUIRED COMPONENTS roscpp moveit moveit_msgs moveit_ros_planning_interface moveit_planning geometry_msgs std_msgs)
+find_package(catkin REQUIRED COMPONENTS roscpp rospy moveit_ros_planning moveit_ros_planning_interface geometry_msgs std_msgs)
+
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
 
@@ -100,7 +101,7 @@ find_package(catkin REQUIRED COMPONENTS roscpp moveit moveit_msgs moveit_ros_pla
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
 #  INCLUDE_DIRS include
-#  LIBRARIES men_at_work
+#  LIBRARIES argh_nodes
 #  CATKIN_DEPENDS other_catkin_pkg
 #  DEPENDS system_lib
 )
@@ -111,11 +112,11 @@ catkin_package(
 
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
-include_directories( include ${catkin_INCLUDE_DIRS} )
+include_directories(include ${catkin_INCLUDE_DIRS})
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/men_at_work.cpp
+#   src/${PROJECT_NAME}/argh_nodes.cpp
 # )
 
 ## Add cmake target dependencies of the library
@@ -126,9 +127,10 @@ include_directories( include ${catkin_INCLUDE_DIRS} )
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-# add_executable(${PROJECT_NAME}_node src/men_at_work_node.cpp)
-add_executable(control_node control_node.cpp)
+# add_executable(${PROJECT_NAME}_node src/argh_nodes_node.cpp)
 add_executable(move_node move_node.cpp)
+add_executable(control_node control_node.cpp)
+
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
 ## target back to the shorter version for ease of user use
@@ -143,8 +145,9 @@ add_executable(move_node move_node.cpp)
 # target_link_libraries(${PROJECT_NAME}_node
 #   ${catkin_LIBRARIES}
 # )
-target_link_libraries(control_node ${catkin_LIBRARIES})
 target_link_libraries(move_node ${catkin_LIBRARIES})
+target_link_libraries(control_node ${catkin_LIBRARIES})
+
 #############
 ## Install ##
 #############
@@ -158,6 +161,7 @@ target_link_libraries(move_node ${catkin_LIBRARIES})
 #   scripts/my_python_script
 #   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 # )
+catkin_install_python(PROGRAMS gripper_cntrl_node.py DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 
 ## Mark executables for installation
 ## See http://docs.ros.org/melodic/api/catkin/html/howto/format1/building_executables.html
@@ -192,7 +196,7 @@ target_link_libraries(move_node ${catkin_LIBRARIES})
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_men_at_work.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_argh_nodes.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()

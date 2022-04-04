@@ -290,6 +290,12 @@ actionlib_DIR:PATH=/opt/ros/melodic/share/actionlib/cmake
 //The directory containing a CMake configuration file for actionlib_msgs.
 actionlib_msgs_DIR:PATH=/opt/ros/melodic/share/actionlib_msgs/cmake
 
+//Value Computed by CMake
+argh_nodes_BINARY_DIR:STATIC=/home/yllieroronnoc/playing_around_argh/build/men_at_work
+
+//Value Computed by CMake
+argh_nodes_SOURCE_DIR:STATIC=/home/yllieroronnoc/playing_around_argh/src/men_at_work
+
 //The directory containing a CMake configuration file for catkin.
 catkin_DIR:PATH=/opt/ros/melodic/share/catkin/cmake
 
@@ -382,7 +388,7 @@ gtest_main_LIB_DEPENDS:STATIC=general;-lpthread;general;gtest;
 kdl_parser_DIR:PATH=/opt/ros/melodic/share/kdl_parser/cmake
 
 //Path to a library.
-lib:FILEPATH=/opt/ros/melodic/lib/libxmlrpcpp.so
+lib:FILEPATH=/opt/ros/melodic/lib/libmoveit_move_group_capabilities_base.so
 
 //Value Computed by CMake
 men_at_work_BINARY_DIR:STATIC=/home/yllieroronnoc/playing_around_argh/build/men_at_work
