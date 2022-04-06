@@ -58,8 +58,8 @@ const std::vector<double> third_pos{5.951443672180176, -1.8237282238402308, -2.3
 //will add more for other tcp used in linear move to other positions
 //%%%%%%%%%%%%%%%%%%%%%%% NEED TO UPDATE FIRST
 const std::vector<double> first_pos_tcp{0.37202, 0.25562 , 0.174};
-const std::vector<double> second_pos_tcp{0.37202, 0.25562 , 0.174};
-const std::vector<double> third_pos_tcp{0.37202, 0.25562 , 0.174};
+const std::vector<double> second_pos_tcp{0.0663, 0.25562 , 0.174 };
+const std::vector<double> third_pos_tcp{-0.2547, 0.25562 , 0.174};
 
  /*
 	Name: MoveSensor
